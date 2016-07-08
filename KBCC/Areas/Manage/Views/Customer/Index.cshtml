@@ -1,0 +1,171 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Manage/Views/Shared/_Layout.cshtml";
+}
+@model IEnumerable<KB.Models.tb_Admin>
+
+<div class="container">
+    @if (TempData["message"] != null)
+    {
+        <div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><strong>@TempData["message"]</strong></div>
+    }
+    <div class="row clearfix">
+            <div class="col-md-12 column">
+                <div class="row clearfix">
+                    <div class="col-md-2 column">
+                    </div>
+                    <div class="col-md-8 column">
+                        <table class="table table-condensed table-hover table-striped">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.AdID)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.AdName)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.AdPwd)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.CentName)
+                                    </th>
+                                    <th>
+                                        @Html.DisplayNameFor(model => model.GetGame)
+                                    </th>
+                                    <th>
+
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var c in Model)
+                                {
+                                    <tr class="info">
+                                        <td>@c.AdID</td>
+                                        <td>@Html.ActionLink(c.AdName, "Edit", new { c.AdID })</td>
+                                        <td>@c.AdPwd</td>
+                                        <td>@c.CentName</td>
+                                        <td>
+                                            @{
+                                                string game = "";
+                                                try
+                                                {
+                                                    string[] Ngame = c.GetGame.ToString().Split(',');
+                                                    string Glist = ViewBag.GList.ToString();
+                                                    string[] List = Glist.ToString().Split(',');
+                                                    foreach (var i in Ngame)
+                                                    {
+                                                        game = game + "[" + List[Convert.ToUInt32(i)] + "]  ";
+                                                    }
+                                                    if (Ngame[0] == "0")
+                                                    {
+                                                        game = "";
+                                                    }
+                                                }
+                                                catch
+                                                {
+                                                    game ="";
+                                                }
+
+                                            }@game
+
+                                        </td>
+                                        <td>
+                                            @using (Html.BeginForm("AuthGame", "Customer"))
+                                            {
+                                                @Html.Hidden("AdID", c.AdID)
+                                                <button type="submit" class="btn btn-info bottom-right">游戏授权</button>
+                                            }
+                                           
+                                            <br />
+
+                                            @using (Html.BeginForm("Delete", "Customer", FormMethod.Post, new { name = "delete" }))
+                                            {
+                                                @Html.Hidden("AdID", c.AdID)
+                                                <button onclick="Dodel(@c.AdName);" type="submit" class="btn btn-danger bottom-right">删除客户</button>
+                                            }
+                                        </td>
+                                    </tr>
+                                                }
+
+
+                            </tbody>
+                        </table>
+                        <div class="row">
+                            <button id="modal-489479" href="#modal-container-489479" class="btn btn-default bottom-right" data-toggle="modal">增加</button>
+                            <div class="bottom-left">
+
+                            </div>
+                        </div>
+
+
+                        <div class="modal fade" id="modal-container-489479" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                        <h4 class="modal-title" id="myModalLabel">
+                                            添加客户
+                                        </h4>
+                                    </div>
+                                    @{KB.Models.tb_Admin Admin = new KB.Models.tb_Admin();}
+
+                                    @using (Ajax.BeginForm("AddCustomer", new { }, new AjaxOptions() { HttpMethod = "post", OnSuccess = "tips" }, new { @class = "form" }))
+                                    {
+                                        <div class="modal-body">
+                                            <div class="form-group">
+                                                @Html.LabelFor(model => Admin.AdName)<br />
+                                                @Html.TextBoxFor(model => Admin.AdName, "UID", new { @placeholder = "Name", @class = "form-control", @id = "InputUID" })
+                                                @Html.ValidationMessageFor(model => Admin.AdName, "", new { @class = "text-danger" })
+                                            </div>
+                                            <div class="form-group">
+                                                @Html.LabelFor(model => Admin.AdPwd)<br />
+                                                @Html.TextBoxFor(model => Admin.AdPwd, "Pwd", new { @placeholder = "PassWord", @class = "form-control", @id = "InputPassword" })
+                                                @Html.ValidationMessageFor(model => Admin.AdPwd, "", new { @class = "text-danger" })
+                                            </div>
+                                            <div class="form-group">
+                                                @Html.LabelFor(model => Admin.CentName)<br />
+                                                @Html.TextBoxFor(model => Admin.CentName, "CentName", new { @placeholder = "CentName", @class = "form-control", @id = "InputPassword" })
+                                                @Html.ValidationMessageFor(model => Admin.CentName, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div id="errorMsg"></div>
+                                         <div class="modal-footer">
+                                          <button type="submit" class="btn btn-default">增加</button>
+                                          <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                       </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2 column">
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+<script type="text/javascript">
+    function tips(data) {
+        var serverData = data.split(':');
+        if (serverData[0] == "ok") {
+            $("#errorMsg").html("<div class=\"alert alert-success alert-dismissible\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span></button><strong>" + serverData[1] + "</strong></div>");
+            setInterval("location.reload();", 2000);
+        }
+        else if (serverData[0] == "no") {
+            $("#errorMsg").html("<div class=\"alert alert-danger alert-dismissible\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span></button><strong>" + serverData[1] + "</strong></div>");
+        }
+        else {
+            alert(serverData[0]);
+            $("#errorMsg").html("<div class=\"alert alert-warning alert-dismissible\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span></button><strong>系统繁忙！</strong></div>");
+        }
+    }
+    function Dodel(name) {
+        if (!confirm("你确定要删除" + name + "?")) {
+            window.event.returnValue = false;
+        }
+    }
+</script>
+

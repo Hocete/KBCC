@@ -1,0 +1,143 @@
+﻿@model IEnumerable<KB.Models.tb_User>
+
+@{
+    ViewBag.Title = "UserManage";
+    Layout = "~/Areas/Customer/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <div class="row clearfix">
+        <div class="col-md-12 column">
+            <div class="tabbable" id="tabs-369020">
+                <ul class="nav nav-tabs">
+                    <li class="active">
+                        <a href="#panel-98646" data-toggle="tab">会员账号管理</a>
+                    </li>
+                    <li>
+                        <a href="#panel-731032" data-toggle="tab">游戏授权管理</a>
+                    </li>
+                    <li>
+                        <a href="#panel-527841" data-toggle="tab">会员金币管理</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane  active" id="panel-98646"> 
+                        @if (TempData["message"] != null)
+                        {
+                            <div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><strong>@TempData["message"]</strong></div>       
+                        }
+                        <table class="table">
+                            <tr>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.UsID)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.UsName)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.UsPwd)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Cent)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.MarkName)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.Content)
+                                </th>
+                                <th>
+                                    @Html.DisplayNameFor(model => model.CanGame)
+                                </th>
+                                <th></th>
+                            </tr>
+                            @{int i = 0; }
+                            @foreach (var item in Model)
+                            {
+                                i++;
+                                <tr>
+                                    <td>
+                                        @i
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.UsName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.UsPwd)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Cent)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.MarkName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Content)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.CanGame)
+                                    </td>
+                                    <td>
+                                        @using (Html.BeginForm("Delete", "Home"))
+                                        {
+                                            @Html.Hidden("UsID", item.UsID)
+                                            <input type="submit" class="btn btn-danger btn-sm" value="删除" />
+                                        }
+                                    </td>
+                                </tr>
+                            }
+
+                        </table>
+
+
+ <script type="text/javascript">
+        function tips(data) {
+            var serverData = data.split(':');
+            if (serverData[0] == "ok") {
+                $("#errorMsg").html("<div class=\"alert alert-success alert-dismissible\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span></button><strong>" + serverData[1] + "</strong></div>");
+                location.reload();
+            }
+            else if (serverData[0] == "no") {
+                $("#errorMsg").html("<div class=\"alert alert-danger alert-dismissible\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span></button><strong>" + serverData[1] + "</strong></div>");
+            }
+            else {
+                alert(serverData[0]);
+                $("#errorMsg").html("<div class=\"alert alert-warning alert-dismissible\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span></button><strong>系统繁忙！</strong></div>");
+            }
+        }
+</script>
+                        <a id="modal-489479" href="#modal-container-489479" class="btn btn-default bottom-right" data-toggle="modal">增加用户</a>
+                        <div class="modal fade" id="modal-container-489479" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                        <h4 class="modal-title" id="myModalLabel">
+                                            添加用户
+                                        </h4>
+                                    </div>
+                                     @{KB.Models.tb_User user = new KB.Models.tb_User();}
+                                     @Html.Partial("AddUser",user)
+                                  
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="tab-pane" id="panel-731032">
+                        <p>
+                            客户信息游戏授权
+                        </p>
+                    </div>
+                    <div class="tab-pane" id="panel-527841">
+                        <p>
+                            会员金币管理
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

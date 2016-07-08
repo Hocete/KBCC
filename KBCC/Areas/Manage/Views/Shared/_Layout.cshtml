@@ -1,0 +1,91 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="~/Resources/favicon.ico">
+    <title>@ViewBag.Title </title>
+    @Styles.Render("~/Content/css")
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap-switch.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-2.2.3.min.js"></script>
+    <script src="~/Scripts/knockout-3.4.0.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/bootstrap-switch.js"></script>
+    <script type="text/javascript">
+    (function() {
+        var $confirm;
+        $confirm = null;
+        $(function() {
+            $("input[type=\"checkbox\"], input[type=\"radio\"]").bootstrapSwitch();
+            return $confirm = $("#confirm").bootstrapSwitch({
+                size: "large",
+                onSwitchChange: function(event, state) {
+                    event.preventDefault();
+                    return console.log(state, event.isDefaultPrevented());
+                }
+            });
+        });
+    }).call(this);
+    </script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    
+</head>
+<body>
+
+        <div>
+            <div class="navbar navbar-inverse navbar-fixed-top">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+
+                        @Html.ActionLink("Root系统管理", "Index", "Home", new { area = "Manage" }, new { @class = "navbar-brand" })
+                    </div>
+                    <div class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav">
+                            @{
+                                string pwd = Session["PWD"].ToString();
+                                string uname = Session["UID"].ToString();
+                                KB.Models.tb_Root Root = new KB.BLL.RootService().Find(uname, pwd);
+                                if (Root.RoID == 1)
+                                {
+                                <li>
+                                    <a href="/Manage/Home/Account">账号管理</a>
+                                </li>
+                                    }
+                                }
+                            <li>
+                                <a href="/Manage/Customer/Index">客户管理</a>
+                            </li>
+                            <li>
+                                <a href="/Manage/Member/Index">会员管理</a>
+                            </li>
+                            <li>
+                                <a href="/Manage/Game/Index">游戏管理</a>
+                            </li>
+                            <li>
+                                <a href="/Manage/Finance/Index">财务管理</a>
+                            </li>
+                        </ul>
+                        @Html.Partial("_LoginPartial")
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container body-content">
+            @RenderBody()
+            <hr />
+            <footer>
+                <p>&copy; @DateTime.Now.Year - Root System Manage</p>
+            </footer>
+        </div>
+
+</body>
+</html>

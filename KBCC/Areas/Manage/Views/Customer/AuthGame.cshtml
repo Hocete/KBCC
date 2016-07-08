@@ -1,0 +1,73 @@
+﻿@using System.Collections;
+@using KB.Models;
+@using KB.BLL;
+@model tb_Admin
+@{
+    ViewBag.Title = "AuthGame";
+    Layout = "~/Areas/Manage/Views/Shared/_Layout.cshtml";
+    IQueryable<tb_Game> game = new GameService().FindList(0);
+    string []Agame=Model.GetGame.Split(',');
+    int count = game.Count<tb_Game>();
+}
+
+<h2>游戏授权</h2>
+@using (Html.BeginForm("AuthGame", "Customer"))
+{
+    @Html.AntiForgeryToken()
+
+
+    <h4>@Model.AdName 的游戏</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(model => model.AdID)
+   
+    <table class="table table-condensed table-hover table-striped">
+        <thead>
+            <tr>
+                <th>游戏名称</th>
+                <th>是否授权</th>
+            </tr>
+        </thead>
+
+        @foreach (var i in game)
+        {
+            string check="";
+            bool exists = ((IList)Agame).Contains(i.GID.ToString());
+            if (exists)
+            {
+                check = "checked";
+            }
+            <tbody>
+                <tr>
+                    <td>@i.GName</td>
+                    <td><input id="@i.GID" type="checkbox" @check> </td>
+                </tr>
+            </tbody>
+        }
+    </table>
+    <input type="hidden" name="AdID" value="@Model.AdID">
+    <input id="gamelist" type="hidden" name="gamelist" value="">
+    <div class="col-md-offset-5 col-md-1">
+        <input type="submit" value="保存" class="btn btn-success" onclick="some();"/>
+    </div>
+    <div class="col-md-6">
+        @Html.ActionLink("返回上级", "Index", "", new { @class = "btn btn-default" })
+    </div>
+
+}
+<script  type="text/javascript">
+    function some() {
+        var glist="";
+        for(var i=1;i<=@count;i++){
+            var checkbox = document.getElementById(i);
+            if(checkbox.checked){
+                glist=glist+i+","
+            }
+        }
+        if(glist==""){
+            glist="0,";
+        }
+        document.getElementById("gamelist").value=glist;
+    } 
+</script>
+

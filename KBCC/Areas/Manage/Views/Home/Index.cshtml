@@ -1,0 +1,39 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+<div class="container">
+    <div class="row clearfix">
+        <div class="col-md-12 column">
+            <div class="jumbotron">
+                <h1>
+                    欢迎登陆管理系统!
+                </h1>
+                <p>
+                    此系统主要面向Root管理员，拥有系统最高权限。可进行Root账号的管理，客户账号的管理，会员账号的管理，游戏及财务管理等。
+                </p>
+                <p>
+                    <a id="modal-489479" href="#modal-container-489479" role="button"  class="btn btn-primary btn-large" data-toggle="modal">了解更多</a>
+                </p>
+                <div class="modal fade" id="modal-container-489479" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <h4 class="modal-title" id="myModalLabel">
+                                    系统操作指南
+                                </h4>
+                            </div>
+                            <div class="modal-body">
+                                {操作指南内容}
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

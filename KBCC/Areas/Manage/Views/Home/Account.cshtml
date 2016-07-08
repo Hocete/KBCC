@@ -1,0 +1,149 @@
+﻿
+@{
+    ViewBag.Title = "Account";
+    Layout = "~/Areas/Manage/Views/Shared/_Layout.cshtml";
+
+}
+@using KB.Models;
+@model tb_Root
+    <div class="row clearfix">
+        
+        <div class="col-md-12 column">
+            <div class="row clearfix">
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 column">
+                </div>
+                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 column">
+                    @if (TempData["message"] != null)
+                    {
+                        <div class="alert alert-success alert-dismissible" role="alert"><button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><strong>@TempData["message"]</strong></div>
+                    }
+                    <table class="table table-condensed table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th>
+                                    ID
+                                </th>
+                                <th>
+                                    管理员账号
+                                </th>
+                                <th>
+                                    密码
+                                </th>
+                                <th>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @{
+                                IQueryable<KB.Models.tb_Root> ab = new KB.BLL.RootService().FindList(0);
+                                IList<tb_Root> abb = ab.ToList();
+                            }
+                            @foreach (var c in abb)
+                            {
+                                <tr class="info">
+                                    <td>@c.RoID</td>
+                                    <td>@Html.ActionLink(c.RoName, "Message", new { c.RoID})</td>
+                                    <td>@c.RoPwd</td>
+                                    <td>
+                                    @if (c.RoID != 1)
+                                    {
+                                        using (Html.BeginForm("Delete", "Home"))
+                                        {
+                                            @Html.Hidden("RoID", c.RoID)
+                                            <button type="submit" class="btn btn-danger bottom-right">删除</button>
+                                        }  
+                                    }
+                                    </td>
+                                </tr>
+                            }
+
+                        </tbody>
+
+                    </table>
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                             
+                        </div>
+                        <div class="col-lg-offset-10 col-lg-2 col-md-offset-11 col-md-1 col-sm-offset-11 col-sm-1 col-xs-offset-11 col-xs-1">
+                            <button id="modal-489479" href="#modal-container-489479" class="btn btn-default" data-toggle="modal">增加</button>
+                        </div>
+                              
+                    </div>
+                    <div class="modal fade" id="modal-container-489479" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                    <h4 class="modal-title" id="myModalLabel">
+                                        添加Root账号
+                                    </h4>
+                                </div>
+
+                                    @using (Ajax.BeginForm("AddAccount", new { }, new AjaxOptions() { HttpMethod = "post", OnSuccess = "tips" }, new { @class = "form" }))
+                                    {
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.RoName)<br/>
+                                            @Html.TextBoxFor(model => model.RoName,"UID",new { @placeholder = "Account",@class="form-control", @id="InputUID"})
+                                            @Html.ValidationMessageFor(model=>model.RoName, "", new { @class = "text-danger" })
+                                        </div>
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.RoPwd)<br />
+                                            @Html.TextBoxFor(model => model.RoPwd,"Pwd", new { @placeholder = "PassWord", @class = "form-control", @id = "InputPassword" })
+                                            @Html.ValidationMessageFor(model => model.RoPwd, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div id="errorMsg"></div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-default">增加</button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                    </div>
+                                    }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 column">
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script type="text/javascript">
+        function tips(data) {
+            var serverData = data.split(':');
+            if (serverData[0] == "ok") {
+                $("#errorMsg").html("<div class=\"alert alert-success alert-dismissible\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span></button><strong>" + serverData[1] + "</strong></div>");
+                setInterval("location.reload();", 2000); 
+            }
+            else if (serverData[0] == "no") {
+                $("#errorMsg").html("<div class=\"alert alert-danger alert-dismissible\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span></button><strong>" + serverData[1] + "</strong></div>");
+            }
+            else {
+                alert(serverData[0]);
+                $("#errorMsg").html("<div class=\"alert alert-warning alert-dismissible\" role=\"alert\"><button type=\"button\" class=\"close\" data-dismiss=\"alert\"><span aria-hidden=\"true\">&times;</span><span class=\"sr-only\">Close</span></button><strong>系统繁忙！</strong></div>");
+            }
+        }
+    </script>
+@*<script type="text/javascript">
+    function SeatReservation(id, name, initialMeal) {
+        var self = this;
+        self.id = id;
+        self.name = name;
+        self.pwd = ko.observable(initialMeal);
+        self.meal = ko.observable(initialMeal);
+    }
+
+    // Overall viewmodel for this screen, along with initial state
+    function ReservationsViewModel() {
+        var self = this;
+        // Editable data
+        self.seats = ko.observableArray();
+        
+        self.seats.push(new SeatReservation(2, "Bert", "789123"));
+        self.seats.push(new SeatReservation(2, "Bert", "789123"));
+    }
+
+    ko.applyBindings(new ReservationsViewModel());
+</script>*@
