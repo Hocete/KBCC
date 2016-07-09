@@ -194,6 +194,9 @@
     <Content Include="Areas\Manage\Views\Customer\Edit.cshtml" />
     <Content Include="Areas\Manage\Views\Customer\AuthGame.cshtml" />
     <Content Include="Areas\Customer\Views\Home\EditMe.cshtml" />
+    <Content Include="Areas\Customer\Views\GameC\Index.cshtml" />
+    <Content Include="Areas\Customer\Views\Gains\Index.cshtml" />
+    <Content Include="Areas\Customer\Views\Log\Index.cshtml" />
     <None Include="Scripts\jquery-2.2.3.intellisense.js" />
     <Content Include="Scripts\jquery-2.2.3.js" />
     <Content Include="Scripts\jquery-2.2.3.min.js" />
@@ -223,8 +226,10 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Areas\Customer\Controllers\GainsController.cs" />
     <Compile Include="Areas\Customer\Controllers\GameCController.cs" />
     <Compile Include="Areas\Customer\Controllers\HomeController.cs" />
+    <Compile Include="Areas\Customer\Controllers\LogController.cs" />
     <Compile Include="Areas\Customer\CustomerAreaRegistration.cs" />
     <Compile Include="Areas\Game\GameAreaRegistration.cs" />
     <Compile Include="Areas\Manage\Controllers\CustomerController.cs" />
@@ -280,7 +285,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Customer\Models\" />
-    <Folder Include="Areas\Customer\Views\GameC\" />
     <Folder Include="Areas\Game\Controllers\" />
     <Folder Include="Areas\Game\Models\" />
     <Folder Include="Areas\Game\Views\Shared\" />
