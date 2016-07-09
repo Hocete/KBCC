@@ -7,33 +7,33 @@
 }
 @if (IsLogin)
 {
+    string identity = Session["IDEN"].ToString().Trim();
     string UID = Session["UID"].ToString();
     string UserPwd = Session["PWD"].ToString();
-    bool isro = false;
-    bool isma = false;
-    bool isus = false;
-    isus = new UserService().Exist(UID,UserPwd);
-    isma = new AdminService().Exist(UID,UserPwd);
-    isro = new RootService().Exist(UID,UserPwd);
     using (Html.BeginForm("Logout", "Login", new { area = "" }, FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
     {
 
     <ul class="nav navbar-nav">
         <li>
-            @if (isma)
+            @if (identity=="2")
             {
                 string name =Session["Cname"].ToString();
                 @Html.ActionLink("你好，" + name + "!", "EditMe", "Home", new { area = "Customer" }, new { })
 
             }
-            else if (isro)
+            else if (identity == "3")
             {
-                string name = new KB.BLL.RootService().Find(UID).RoName;
+                string name = new RootService().Find(UID).RoName;
                 tb_Root root = new RootService().Find(UID, UserPwd);
                 @Html.ActionLink("你好，" + name + "!!", "Message", "Home", new { area = "Manage", root.RoID }, new { })
             }
+            else
+            {
+                string name = Session["UID"].ToString();
+                @Html.ActionLink(name + "-", "Message", "Home", new { })
+            }
         </li>
-        <li><a href="javascript:document.getElementById('logoutForm').submit()">注销</a>  </li>     
+        <li><a href="javascript:document.getElementById('logoutForm').submit()">注销</a>  </li>
     </ul>
     }
 }

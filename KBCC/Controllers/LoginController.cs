@@ -27,6 +27,7 @@ namespace KBCC.Controllers
             {
                 Session["UID"] = UID;
                 Session["PWD"] = UserPwd;
+                Session["IDEN"] = 1;
                 if (Request["Remember"] != "false")
                 {
                     HttpCookie cookie = new HttpCookie("KKKWCook");
@@ -43,6 +44,7 @@ namespace KBCC.Controllers
             {
                 Session["UID"] = UID;
                 Session["PWD"] = UserPwd;
+                Session["IDEN"] = 2;
                 if (Request["Remember"] != "false")
                 {
                     HttpCookie cookie = new HttpCookie("KKKWCook");
@@ -60,6 +62,7 @@ namespace KBCC.Controllers
             {
                 Session["UID"] = UID;
                 Session["PWD"] = UserPwd;
+                Session["IDEN"] = 3;
                 if (Request["Remember"] != "false")
                 {
                     HttpCookie cookie = new HttpCookie("KKKWCook");

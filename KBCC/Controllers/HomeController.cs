@@ -13,5 +13,9 @@ namespace KBCC.Controllers
         {
             return View();
         }
+        public ActionResult Message()
+        {
+            return View();
+        }
     }
 }
