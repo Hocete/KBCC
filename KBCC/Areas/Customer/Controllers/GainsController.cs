@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace KBCC.Areas.Customer.Controllers
 {
+    [CheckCustomer]
     public class GainsController : Controller
     {
         // GET: Customer/Gains

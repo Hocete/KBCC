@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace KBCC.Areas.Customer.Controllers
 {
+    [CheckCustomer]
     public class LogController : Controller
     {
         // GET: Customer/Log
